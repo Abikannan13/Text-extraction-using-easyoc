@@ -1,0 +1,6 @@
+numpy==1.26.4
+opencv-python==4.9.0.80
+pandas==2.2.2
+pillow==10.3.0
+streamlit==1.33.0
+easyocr==1.7.1
