@@ -10,21 +10,21 @@ def detect(image):
     # image=cv2.imread(image)
     img2=image.copy()
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imshow("gray",gray)
+    # cv2.imshow("gray",gray)
     blur = cv2.GaussianBlur(gray, (3,3), 0)
-    cv2.imshow("blur",blur)
+    # cv2.imshow("blur",blur)
     canny=cv2.Canny(blur,0,150)
-    cv2.imshow("canny",canny)
-    print(canny.dtype)
+    # cv2.imshow("canny",canny)
+    # print(canny.dtype)
     hough_lines_image2 = np.zeros_like(image)
     linesP = cv2.HoughLinesP(canny, 1, np.pi / 90, 50, None, 100, 20)
     if linesP is not None:
       for i in range(0, len(linesP)):
        l = linesP[i][0]
        cv2.line(hough_lines_image2, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv2.LINE_AA)
-    cv2.imshow("hou",hough_lines_image2)
+    # cv2.imshow("hou",hough_lines_image2)
     hough_lines_image2=cv2.cvtColor(hough_lines_image2,cv2.COLOR_BGR2GRAY)
-    print(hough_lines_image2.dtype)
+    # print(hough_lines_image2.dtype)
     # rho_resolution = 1
     # theta_resolution = np.pi/90
     # threshold = 230
@@ -58,12 +58,12 @@ def detect(image):
     # kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3,3))
     # dilate = cv2.dilate(invert, kernel, iterations = 1)
     contours, hierarchy = cv2.findContours(canny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    print(len(contours))
+    # print(len(contours))
 
     approx_contours = [cv2.approxPolyDP(cnt, 0.04 * cv2.arcLength(cnt, True), True) for cnt in contours]
-    print(approx_contours)
+    # print(approx_contours)
     table_contours = [cnt for cnt in approx_contours if len(cnt) == 4]
-    print(table_contours)
+    # print(table_contours)
     # df=pd.DataFrame(narr,index=area)
     # print(df)
 
@@ -78,12 +78,12 @@ def detect(image):
                     max_area=cv2.contourArea(cnt)
                     max_cont=cnt
     large_box=cv2.boundingRect(max_cont)
-    cv2.imshow("image",image)
+    # cv2.imshow("image",image)
 
     x,y,w,h=large_box
-    print(x,y,w,h)
+    # print(x,y,w,h)
     newimg=img2[y:y+h,x:x+w]
-    cv2.imshow("cropped image",newimg)
+    # cv2.imshow("cropped image",newimg)
     # cv2.imshow("3.jpg", blur)
     # cv2.imshow("4.jpg", threshold)
     # cv2.imshow("5.jpg", invert)
@@ -100,12 +100,12 @@ def detect(image):
     # result = reader.readtext('image copy 9.png', detail=0) #paragraph= True,
 
     result = reader.readtext(newimg) #paragraph=True
-    print("Detected Test Results:", result)
+    # print("Detected Test Results:", result)
 
     for i in range(len(result)):
         top_left = tuple(map(int, result[i][0][0]))
         bottom_right = tuple(map(int, result[i][0][2]))
-        print(top_left, bottom_right)
+        # print(top_left, bottom_right)
         image = cv2.rectangle(newimg,top_left,bottom_right,(0,255,0),2)
 
     table = []
@@ -139,7 +139,7 @@ def detect(image):
 
 
     st.write(df)
-    cv2.imshow("2.jpg",image)
+    # cv2.imshow("2.jpg",image)
 
 
 
